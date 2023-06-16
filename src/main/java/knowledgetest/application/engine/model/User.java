@@ -1,7 +1,7 @@
 package knowledgetest.application.engine.model;
 
 public class User {
-    public static final int NUMBER_OF_FIELDS = 11;
+    public static final int NUMBER_OF_FIELDS = 10;
     private String login;
     private String password;
     private String role;
@@ -11,13 +11,12 @@ public class User {
     private String patronymic;
     private String group;
     private String email;
-    private String question;
     private  String answer;
 
 
     public User(){ }
 
-    public User(String login, String password, String name, String surname, String patronymic, String group, String email, String question, String answer){
+    public User(String login, String password, String name, String surname, String patronymic, String group, String email, String answer){
         this.login = login;
         this.password = password;
         this.role = "user";
@@ -27,11 +26,10 @@ public class User {
         this.patronymic = patronymic;
         this.group = group;
         this.email = email;
-        this.question = question;
         this.answer =answer;
     }
 
-    public User(String login, String password, String role, String name, String surname, String patronymic, String group, String email, String question, String answer){
+    public User(String login, String password, String role, String name, String surname, String patronymic, String group, String email, String answer){
         this.login = login;
         this.password = password;
         this.role = role;
@@ -41,7 +39,6 @@ public class User {
         this.patronymic = patronymic;
         this.group = group;
         this.email = email;
-        this.question = question;
         this.answer =answer;
     }
 
@@ -71,9 +68,6 @@ public class User {
 
     public String getEmail() { return this.email;}
     public void setEmail(String email) { this.email = email;}
-
-    public String getQuestion() { return this.question;}
-    public void setQuestion(String numberOfQuestion) { this.question = numberOfQuestion;}
 
     public String getAnswer() { return answer;}
     public void setAnswer(String answer) { this.answer = answer;}

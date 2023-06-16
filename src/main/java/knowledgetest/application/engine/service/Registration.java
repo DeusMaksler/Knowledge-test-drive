@@ -24,11 +24,6 @@ public class Registration {
         return !(this.loginList.contains(enteredLogin));
     }
 
-    public static boolean fitThePattern(String enteredString, Pattern selectPattern) {
-        Matcher validString = selectPattern.matcher(enteredString);
-        return validString.matches();
-    }
-
     public boolean logUpVerification( String login, String password, String name, String surname, String patronymic, String group, String email) {
         if(!fitThePattern(login, LOGIN_PATTERN)) { return false;}
         if (!fitThePattern(password, PASSWORD_PATTERN)) {return false;}
@@ -36,5 +31,10 @@ public class Registration {
         if (!fitThePattern(group, GROUP_PATTERN)) { return false;}
         if (!(fitThePattern(name, ONLY_LETTERS) && fitThePattern(surname, ONLY_LETTERS) && fitThePattern(patronymic, ONLY_LETTERS))) { return false;}
         return true;
+    }
+
+    private static boolean fitThePattern(String enteredString, Pattern selectPattern) {
+        Matcher validString = selectPattern.matcher(enteredString);
+        return validString.matches();
     }
 }

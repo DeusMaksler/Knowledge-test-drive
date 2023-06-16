@@ -26,12 +26,12 @@ public class Authorization {
         }
     }
 
-    public String getSecretQuestion(String login) {
-        return this.accountList.get(login)[2];
+    public boolean checkSecretAnswer(String login, String answer) {
+        return this.accountList.get(login)[2].equals(answer);
     }
 
-    public boolean checkSecretAnswer(String login, String answer) {
-        return this.accountList.get(login)[3].equals(answer);
+    public String getAccRole(String login) {
+        return this.accountList.get(login)[1];
     }
 
     private int countAttempts(String login) {

@@ -11,9 +11,9 @@ import java.util.Set;
 
 public class UsersTable extends BaseFunc{
     private static final String TABLE_NAME = "Persons";
-    private final  String[] TABLE_HEADERS = {"login", "password", "role", "status", "name", "surname", "patronymic", "group", "email", "question", "answer"};
-    public static final User TEST_USER = new User("Tester", "ABCdef12*", "Тест", "Тестеров", "Тестович", "22БИБ9", "test@yandex.ru", "first", "first");
-    private final User DEFAULT_ADMIN = new User("admin", "441650", "admin", "", "", "", "", "exemple@yandex.ru", "first", "Дорога");
+    private final  String[] TABLE_HEADERS = {"login", "password", "role", "status", "name", "surname", "patronymic", "group", "email", "answer"};
+//    public static final User TEST_USER = new User("Tester", "ABCdef12*", "Тест", "Тестеров", "Тестович", "22БИБ9", "test@yandex.ru", "first");
+    private final User DEFAULT_ADMIN = new User("admin", "441650", "admin", "", "", "", "", "exemple@yandex.ru", "Дорога");
 
     public UsersTable() {
         if (!tableExist(TABLE_NAME)){ initialize();}
@@ -74,10 +74,9 @@ public class UsersTable extends BaseFunc{
             Cell login = activeRow.getCell(0);
             Cell password = activeRow.getCell(1);
             Cell accessLevel = activeRow.getCell(2);
-            Cell question = activeRow.getCell(9);
-            Cell answer = activeRow.getCell(10);
+            Cell answer = activeRow.getCell(9);
             //упаковка в массив пароля и роли, названия вопроса и секретного ответа
-            String[] accInfo = new String[]{password.getStringCellValue(), accessLevel.getStringCellValue(), question.getStringCellValue(), answer.getStringCellValue()};
+            String[] accInfo = new String[]{password.getStringCellValue(), accessLevel.getStringCellValue(), answer.getStringCellValue()};
             accounts.put(login.getStringCellValue(), accInfo);
         }
         readableWorkbook.close();
@@ -130,9 +129,6 @@ public class UsersTable extends BaseFunc{
         // entry email
         activeCell = userPosition.createCell(colIndex++);
         activeCell.setCellValue(person.getEmail());
-        // entry question
-        activeCell = userPosition.createCell(colIndex++);
-        activeCell.setCellValue(person.getQuestion());
         // entry answer
         activeCell = userPosition.createCell(colIndex);
         activeCell.setCellValue(person.getAnswer());
