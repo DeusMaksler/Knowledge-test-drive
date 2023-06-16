@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class BaseFunc {
-     protected  static final String DIR_PATH = "../FileUsing/assets/";
+     protected  static final String DIR_PATH = "../Knowledge-test-drive/src/main/assets/";
 
     protected static boolean tableExist(String name) {
         String filePath = DIR_PATH + name +".xlsx";
