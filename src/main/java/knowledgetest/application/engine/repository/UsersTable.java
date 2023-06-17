@@ -1,10 +1,13 @@
 package knowledgetest.application.engine.repository;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import knowledgetest.application.engine.model.User;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -126,6 +129,16 @@ public class UsersTable extends BaseFunc{
         readableWorkbook.close();
     }
 
+    public static void changeRole(String login, String status) throws IOException {
+        Workbook readableWorkbook = tableReadConnection(TABLE_NAME);
+        Sheet readableSheet = readableWorkbook.getSheetAt(0);
+
+        int userPos = searchUser(readableSheet, login);
+        readableSheet.getRow(userPos).getCell(ROLE_CELL).setCellValue(status);
+        tableWriteConnection(TABLE_NAME, readableWorkbook);
+        readableWorkbook.close();
+    }
+
     public static void changePassword(String login, String newPass) throws IOException {
         Workbook readableWorkbook = tableReadConnection(TABLE_NAME);
         Sheet readableSheet = readableWorkbook.getSheetAt(0);
@@ -239,6 +252,21 @@ public class UsersTable extends BaseFunc{
         }
         readableWorkbook.close();
         return loginSet;
+    }
+
+    public static ArrayList<User> getUserList() throws IOException {
+        Workbook readableWorkbook = tableReadConnection(TABLE_NAME);
+        Sheet readableSheet = readableWorkbook.getSheetAt(0);
+
+        int quantity = getQuantityUsers(readableSheet);
+        ArrayList<User> userList = new ArrayList<>();
+
+        for (int i = 2; i < quantity +1; i++) {
+            userList.add(getUser(readableSheet.getRow(i)));
+        }
+
+        readableWorkbook.close();
+        return userList;
     }
 }
 

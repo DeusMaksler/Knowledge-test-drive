@@ -1,8 +1,7 @@
 package knowledgetest.application.frontend.controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import knowledgetest.application.Main;
 import knowledgetest.application.engine.model.User;
@@ -10,12 +9,16 @@ import knowledgetest.application.engine.repository.UsersTable;
 import knowledgetest.application.engine.service.Registration;
 import knowledgetest.application.frontend.common.DialogWindow;
 import knowledgetest.application.frontend.common.PageManage;
+import knowledgetest.application.frontend.generators.Tabs;
 
 import java.io.IOException;
 
 public class Lk {
     private final String ERROR_NAME = "Ошибка изменения";
     private User currentAcc;
+
+    @FXML
+    private TabPane lkTabPane;
     @FXML
     private TextField passwordField;
     @FXML
@@ -40,6 +43,9 @@ public class Lk {
         patronymicField.setText(currentAcc.getPatronymic());
         groupField.setText(currentAcc.getGroup());
         emailField.setText(currentAcc.getEmail());
+
+        //реализовать разделение по ролям //fix me
+        lkTabPane.getTabs().add(Tabs.createUsersTab());
     }
 
     public void activeFields() {

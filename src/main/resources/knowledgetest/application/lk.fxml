@@ -9,7 +9,7 @@
 
 <AnchorPane prefHeight="440.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="knowledgetest.application.frontend.controllers.Lk">
    <children>
-      <TabPane prefHeight="440.0" prefWidth="650.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="lkTabPane" prefHeight="440.0" prefWidth="650.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab closable="false" text="Личные данные">
             <content>
