@@ -8,6 +8,7 @@ import java.util.HashMap;
 public class Authorization {
     private final HashMap<String, String[]> accountList;
     private HashMap<String, Integer> attemptsList;
+    private final int QUANTITY_ATTEMPTS = 4;
 
     public Authorization() throws IOException{
         this.accountList = UsersTable.getAccList();
@@ -16,14 +17,18 @@ public class Authorization {
     //этот метод возвращает коды соответствующих состояний
     public int logInVerification(String log, String pass){
         if (!this.accountList.containsKey(log)) { return 1;} //Пользователь отсутствует
-        if (this.accountList.get(log)[0].equals(pass)){ return 0;} //Пароль верный
+        if (checkPassword(log,pass)){ return 0;} //Пароль верный
         //проверяет и сохраняет кол-во неверных вводов для логинов
         int wrongAttempts = countAttempts(log);
-        if (wrongAttempts == 4){ return 3; } //Достигнут лимит неверных вводов
+        if (wrongAttempts == QUANTITY_ATTEMPTS){ return 3; } //Достигнут лимит неверных вводов
         else {
             this.attemptsList.put(log, countAttempts(log));
             return 2; //Пароль неверен
         }
+    }
+
+    public boolean checkPassword(String log, String pass){
+       return this.accountList.get(log)[0].equals(pass);
     }
 
     public boolean checkSecretAnswer(String login, String answer) {

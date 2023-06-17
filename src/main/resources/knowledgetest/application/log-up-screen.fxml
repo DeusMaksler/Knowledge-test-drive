@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
@@ -15,9 +16,18 @@
          <children>
             <AnchorPane prefHeight="89.0" prefWidth="550.0">
                <children>
-                  <TextField fx:id="nameField" layoutX="14.0" layoutY="47.0" promptText="Ваше имя" />
-                  <TextField fx:id="surnameField" layoutX="200.0" layoutY="47.0" promptText="Ваша фамилия" />
-                  <TextField fx:id="patronymicField" layoutX="386.0" layoutY="47.0" promptText="Ваше отчество" />
+                  <TextField fx:id="nameField" layoutX="14.0" layoutY="47.0" promptText="Ваше имя">
+                     <tooltip>
+                        <Tooltip text="Может содержать только буквы" />
+                     </tooltip></TextField>
+                  <TextField fx:id="surnameField" layoutX="200.0" layoutY="47.0" promptText="Ваша фамилия">
+                     <tooltip>
+                        <Tooltip text="Может содержать только буквы" />
+                     </tooltip></TextField>
+                  <TextField fx:id="patronymicField" layoutX="386.0" layoutY="47.0" promptText="Ваше отчество">
+                     <tooltip>
+                        <Tooltip text="Может содержать только буквы" />
+                     </tooltip></TextField>
                   <Label layoutX="196.0" layoutY="14.0" text="Введите ваше ФИО">
                      <font>
                         <Font name="Bookman Old Style" size="16.0" />
@@ -33,7 +43,7 @@
                      </font>
                   </Label>
                   <TextField fx:id="emailField" layoutX="14.0" layoutY="48.0" prefHeight="26.0" prefWidth="158.0" promptText="Ваш email" />
-                  <TextField fx:id="groupField" layoutX="380.0" layoutY="48.0" prefHeight="26.0" prefWidth="158.0" promptText="Ваша группа" />
+                  <TextField fx:id="groupField" layoutX="377.0" layoutY="48.0" prefHeight="26.0" prefWidth="158.0" promptText="Ваша группа" />
                </children>
             </AnchorPane>
             <AnchorPane prefHeight="101.0" prefWidth="550.0">
@@ -43,7 +53,10 @@
                         <Font name="Bookman Old Style" size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="loginField" layoutX="14.0" layoutY="51.0" promptText="Ваша логин" />
+                  <TextField fx:id="loginField" layoutX="14.0" layoutY="51.0" promptText="Ваша логин">
+                     <tooltip>
+                        <Tooltip text="Может содержать латинские буквы и цифры, минимум 5 знаков" />
+                     </tooltip></TextField>
                   <PasswordField fx:id="passwordField" layoutX="386.0" layoutY="51.0" promptText="Ваш пароль">
                      <tooltip>
                         <Tooltip text="Пароль должен содержать строчную и заглавную латинские буквы, цифру, спец символ, минммум 8 знаков" />
@@ -68,15 +81,21 @@
             </AnchorPane>
          </children>
       </VBox>
-      <Button layoutX="65.0" layoutY="429.0" mnemonicParsing="false" text="Зарегистрироваться" textAlignment="CENTER">
+      <Button layoutX="65.0" layoutY="429.0" mnemonicParsing="false" onMouseClicked="#registerUser" text="Зарегистрироваться" textAlignment="CENTER">
          <font>
             <Font name="Bookman Old Style" size="14.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
       <Button layoutX="552.0" layoutY="429.0" mnemonicParsing="false" onMouseClicked="#goToAuthorization" text="Назад">
          <font>
             <Font name="Bookman Old Style" size="14.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
    </children>
 </AnchorPane>
