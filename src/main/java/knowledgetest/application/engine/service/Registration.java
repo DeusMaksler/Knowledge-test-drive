@@ -50,9 +50,9 @@ public class Registration {
         return validString.matches();
     }
 
-    public static boolean editPassword(String userLogin, String userPassword) {
+    public static boolean editPassword(String userLogin, String userPassword) throws IOException {
         if (checkPassword(userPassword)) {
-            //изменение пароля
+            UsersTable.changePassword(userLogin, userPassword);
             return true;
         } else {
             return false;

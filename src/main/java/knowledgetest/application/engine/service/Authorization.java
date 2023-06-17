@@ -12,6 +12,7 @@ public class Authorization {
 
     public Authorization() throws IOException{
         this.accountList = UsersTable.getAccList();
+        this.attemptsList = new HashMap();
     }
 
     //этот метод возвращает коды соответствующих состояний
@@ -22,7 +23,7 @@ public class Authorization {
         int wrongAttempts = countAttempts(log);
         if (wrongAttempts == QUANTITY_ATTEMPTS){ return 3; } //Достигнут лимит неверных вводов
         else {
-            this.attemptsList.put(log, countAttempts(log));
+            this.attemptsList.put(log, wrongAttempts);
             return 2; //Пароль неверен
         }
     }
@@ -39,6 +40,10 @@ public class Authorization {
         return this.accountList.get(login)[1];
     }
 
+    public void banUser(String userLogin) throws IOException {
+        UsersTable.changeStatus(userLogin, false);
+    }
+
     private int countAttempts(String login) {
         if (this.attemptsList.containsKey(login)) {
             return attemptsList.get(login) + 1;
@@ -46,6 +51,4 @@ public class Authorization {
             return 1;
         }
     }
-
-
 }

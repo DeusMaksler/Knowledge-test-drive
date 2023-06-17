@@ -31,19 +31,18 @@ public class LogUpScreen {
     @FXML
     private TextField answerField;
 
-    public LogUpScreen() throws IOException {
-    }
+    public LogUpScreen() throws IOException {}
 
-    public static void goToAuthorization() throws IOException {
+    public void goToAuthorization() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("log-in-screen.fxml"));
-        Stage stage = (Stage) nameField.getScene().getWindow();
+        Stage currentStage = (Stage) loginField.getScene().getWindow();
         Scene scene = new Scene(fxmlLoader.load(), 555, 365);
-        stage.setScene(scene);
-        stage.setTitle("Регистрация аккаунта");
+        currentStage.setScene(scene);
+        currentStage.setTitle("Войдите в приложение");
     }
 
     public void registerUser() throws IOException {
-        if (allFieldsNotEmpty()){  //проверка валидация полей формы
+        if (signUpFieldsNotEmpty()){  //валидация полей формы
             if (reg.uniqueLogin(loginField.getText())){
                 int logUpStatus = reg.logUpVerification(loginField.getText(), passwordField.getText(), nameField.getText(), surnameField.getText(), patronymicField.getText(), groupField.getText(), emailField.getText());
                 //проверка всех введённых данных
@@ -51,7 +50,7 @@ public class LogUpScreen {
                     case  (0):
                         reg.createAcc(loginField.getText(), passwordField.getText(), nameField.getText(), surnameField.getText(), patronymicField.getText(), groupField.getText(), emailField.getText(), answerField.getText());
                         DialogWindow.createInfoDialog("Регистрация", "Пользователь успешно зарегистрирован");
-                        goToAuthorization();
+                        //goToAuthorization((Stage) loginField.getScene().getWindow());//fix me
                         break;
                     case  (1):
                         DialogWindow.createInfoDialog(ERROR_NAME, "Логин неприемлемого формата, введите новый");
@@ -79,7 +78,7 @@ public class LogUpScreen {
         }
     }
 
-    private boolean allFieldsNotEmpty() {
+    private boolean signUpFieldsNotEmpty() {
         if (loginField.getText().isEmpty() || passwordField.getText().isEmpty() || nameField.getText().isEmpty() || surnameField.getText().isEmpty() || patronymicField.getText().isEmpty() || emailField.getText().isEmpty() || groupField.getText().isEmpty() || answerField.getText().isEmpty()) {
             return false;
         }

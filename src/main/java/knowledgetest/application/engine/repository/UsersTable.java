@@ -11,8 +11,19 @@ import java.util.Set;
 
 public class UsersTable extends BaseFunc{
     private static final String TABLE_NAME = "Persons";
+    private static final  int LOGIN_CELL = 0;
+    private static final  int PASSWORD_CELL = 1;
+    private static final  int ROLE_CELL = 2;
+    private static final  int STATUS_CELL = 3;
+    private static final  int NAME_CELL = 4;
+    private static final  int SURNAME_CELL = 5;
+    private static final  int PATRONYMIC_CELL = 6;
+    private static final  int GROUP_CELL = 7;
+    private static final  int EMAIL_CELL = 8;
+    private static final  int ANSWER_CELL = 9;
+
     private final  String[] TABLE_HEADERS = {"login", "password", "role", "status", "name", "surname", "patronymic", "group", "email", "answer"};
-//    public static final User TEST_USER = new User("Tester", "ABCdef12*", "Тест", "Тестеров", "Тестович", "22БИБ9", "test@yandex.ru", "first");
+//    public static final User TEST_USER = new User("Tester", "ABCd9ef12*", "Тест", "Тестеров", "Тестович", "22БИБ9", "test@yandex.ru", "first");
     private final User DEFAULT_ADMIN = new User("admin", "441650", "admin", "", "", "", "", "exemple@yandex.ru", "Дорога");
 
     public UsersTable() {
@@ -59,6 +70,72 @@ public class UsersTable extends BaseFunc{
         readableWorkbook.close();
     }
 
+    public static void changeStatus(String login, boolean status) throws IOException {
+        Workbook readableWorkbook = tableReadConnection(TABLE_NAME);
+        Sheet readableSheet = readableWorkbook.getSheetAt(0);
+
+        int userPos = searchUser(readableSheet, login);
+        readableSheet.getRow(userPos).getCell(STATUS_CELL).setCellValue(status);
+        tableWriteConnection(TABLE_NAME, readableWorkbook);
+        readableWorkbook.close();
+    }
+
+    public static void changePassword(String login, String newPass) throws IOException {
+        Workbook readableWorkbook = tableReadConnection(TABLE_NAME);
+        Sheet readableSheet = readableWorkbook.getSheetAt(0);
+
+        int userPos = searchUser(readableSheet, login);
+        readableSheet.getRow(userPos).getCell(PASSWORD_CELL).setCellValue(newPass);
+        tableWriteConnection(TABLE_NAME, readableWorkbook);
+        readableWorkbook.close();
+    }
+
+    private static void addUser(Row userPosition, User person) throws IOException {
+        // entry login
+        Cell activeCell = userPosition.createCell(LOGIN_CELL);
+        activeCell.setCellValue(person.getLogin());
+        // entry password
+        activeCell = userPosition.createCell(PASSWORD_CELL); //1 колонка
+        activeCell.setCellValue(person.getPassword());
+        // entry role
+        activeCell = userPosition.createCell(ROLE_CELL); //2 колонка
+        activeCell.setCellValue(person.getRole());
+        // entry status
+        activeCell = userPosition.createCell(STATUS_CELL);
+        activeCell.setCellValue(person.getStatus());
+        // entry name
+        activeCell = userPosition.createCell(NAME_CELL);
+        activeCell.setCellValue(person.getName());
+        // entry surname
+        activeCell = userPosition.createCell(SURNAME_CELL);
+        activeCell.setCellValue(person.getSurname());
+        // entry patronymic
+        activeCell = userPosition.createCell(PATRONYMIC_CELL);
+        activeCell.setCellValue(person.getPatronymic());
+        // entry group
+        activeCell = userPosition.createCell(GROUP_CELL);
+        activeCell.setCellValue(person.getGroup());
+        // entry email
+        activeCell = userPosition.createCell(EMAIL_CELL);
+        activeCell.setCellValue(person.getEmail());
+        // entry answer
+        activeCell = userPosition.createCell(ANSWER_CELL);
+        activeCell.setCellValue(person.getAnswer());
+    }
+
+    private static  int searchUser(Sheet sheet, String userLogin) {
+        for (int rowNumber = 1; rowNumber < getQuantityUsers(sheet)+1; rowNumber++) {
+            Cell loginCell = sheet.getRow(rowNumber).getCell(LOGIN_CELL);
+            if (loginCell.getStringCellValue().equals(userLogin)){ return rowNumber; }
+        }
+        return 0; //ошибка поиска пользователя, исключаемая в силу контекста
+    }
+
+    private static int getQuantityUsers(Sheet sheet) {
+        Cell quantityContain= sheet.getRow(0).getCell(User.NUMBER_OF_FIELDS);
+        return  (int)quantityContain.getNumericCellValue();
+    }
+
     public static HashMap<String, String[]> getAccList() throws IOException{
         HashMap<String, String[]> accounts = new HashMap<>();
 
@@ -71,13 +148,15 @@ public class UsersTable extends BaseFunc{
         //получение информации из строки пользователя
         for (int i = 1; i < countUsers + 1; i++) {
             Row activeRow = readableSheet.getRow(i);
-            Cell login = activeRow.getCell(0);
-            Cell password = activeRow.getCell(1);
-            Cell accessLevel = activeRow.getCell(2);
-            Cell answer = activeRow.getCell(9);
-            //упаковка в массив пароля и роли, названия вопроса и секретного ответа
-            String[] accInfo = new String[]{password.getStringCellValue(), accessLevel.getStringCellValue(), answer.getStringCellValue()};
-            accounts.put(login.getStringCellValue(), accInfo);
+            if (activeRow.getCell(STATUS_CELL).getBooleanCellValue()){ //проверка аккаунта на блокировку
+                Cell login = activeRow.getCell(LOGIN_CELL);
+                Cell password = activeRow.getCell(PASSWORD_CELL);
+                Cell role = activeRow.getCell(ROLE_CELL);
+                Cell answer = activeRow.getCell(ANSWER_CELL);
+                //упаковка в массив пароля и роли, названия вопроса и секретного ответа
+                String[] accInfo = new String[]{password.getStringCellValue(), role.getStringCellValue(), answer.getStringCellValue()};
+                accounts.put(login.getStringCellValue(), accInfo);
+            }
         }
         readableWorkbook.close();
         return accounts;
@@ -93,50 +172,11 @@ public class UsersTable extends BaseFunc{
         int countUsers = getQuantityUsers(readableSheet);
 
         for (int i = 1; i < countUsers + 1; i++) {
-            Cell login = readableSheet.getRow(i).getCell(0);
+            Cell login = readableSheet.getRow(i).getCell(LOGIN_CELL);
             loginSet.add(login.getStringCellValue());
         }
         readableWorkbook.close();
         return loginSet;
-    }
-
-    private static void addUser(Row userPosition, User person) throws IOException {
-        byte colIndex = 0;
-        // entry login
-        Cell activeCell = userPosition.createCell(colIndex++); //0 колонка
-        activeCell.setCellValue(person.getLogin());
-        // entry password
-        activeCell = userPosition.createCell(colIndex++); //1 колонка
-        activeCell.setCellValue(person.getPassword());
-        // entry role
-        activeCell = userPosition.createCell(colIndex++); //2 колонка
-        activeCell.setCellValue(person.getRole());
-        // entry status
-        activeCell = userPosition.createCell(colIndex++);
-        activeCell.setCellValue(person.getStatus());
-        // entry name
-        activeCell = userPosition.createCell(colIndex++);
-        activeCell.setCellValue(person.getName());
-        // entry surname
-        activeCell = userPosition.createCell(colIndex++);
-        activeCell.setCellValue(person.getSurname());
-        // entry patronymic
-        activeCell = userPosition.createCell(colIndex++);
-        activeCell.setCellValue(person.getPatronymic());
-        // entry group
-        activeCell = userPosition.createCell(colIndex++);
-        activeCell.setCellValue(person.getGroup());
-        // entry email
-        activeCell = userPosition.createCell(colIndex++);
-        activeCell.setCellValue(person.getEmail());
-        // entry answer
-        activeCell = userPosition.createCell(colIndex);
-        activeCell.setCellValue(person.getAnswer());
-    }
-
-    private static int getQuantityUsers(Sheet sheet) {
-        Cell quantityContain= sheet.getRow(0).getCell(User.NUMBER_OF_FIELDS);
-        return  (int)quantityContain.getNumericCellValue();
     }
 }
 
