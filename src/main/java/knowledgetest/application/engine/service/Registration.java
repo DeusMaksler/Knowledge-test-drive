@@ -34,6 +34,14 @@ public class Registration {
         if (!(fitThePattern(name, ONLY_LETTERS) && fitThePattern(surname, ONLY_LETTERS) && fitThePattern(patronymic, ONLY_LETTERS))) { return 5;}
         return 0;
     }
+    //Для валидации данных при изменении в личном кабинете
+    public static int validFields(String password, String name, String surname, String patronymic, String group, String email) {
+        if (!checkPassword(password)) {return 2;}
+        if (!fitThePattern(email, EMAIL_PATTERN)) { return 3;}
+        if (!fitThePattern(group, GROUP_PATTERN)) { return 4;}
+        if (!(fitThePattern(name, ONLY_LETTERS) && fitThePattern(surname, ONLY_LETTERS) && fitThePattern(patronymic, ONLY_LETTERS))) { return 5;}
+        return 0;
+    }
 
     public void createAcc( String login, String password, String name, String surname, String patronymic, String group, String email, String answer) throws IOException {
         User newUser = new User(login, password, name, surname, patronymic, group, email, answer);

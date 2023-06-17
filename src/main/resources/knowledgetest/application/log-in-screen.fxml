@@ -11,7 +11,7 @@
       <VBox layoutX="114.0" layoutY="94.0" prefHeight="160.0" prefWidth="323.0" spacing="40.0" style="-fx-background-color: beige;">
          <children>
             <TextField fx:id="login" promptText="Введите логин" />
-            <TextField fx:id="password" promptText="Введите пароль" />
+            <PasswordField fx:id="password" promptText="Введите пароль" />
          </children>
          <opaqueInsets>
             <Insets />

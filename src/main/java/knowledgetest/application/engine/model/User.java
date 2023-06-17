@@ -14,7 +14,10 @@ public class User {
     private  String answer;
 
 
-    public User(){ }
+    public User(){
+        this.role = "user";
+        this.status = true;
+    }
 
     public User(String login, String password, String name, String surname, String patronymic, String group, String email, String answer){
         this.login = login;

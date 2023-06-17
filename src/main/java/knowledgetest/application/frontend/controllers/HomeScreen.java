@@ -11,6 +11,6 @@ public class HomeScreen {
     @FXML
     private Button lkButton;
     public void goToLK() throws IOException {
-        PageManage.loadPage((Stage) lkButton.getScene().getWindow(), "lk.fxml", "Личный кабинет", 700, 700) ;
+        PageManage.loadPage((Stage) lkButton.getScene().getWindow(), "lk.fxml", "Личный кабинет", 650, 440) ;
     }
 }

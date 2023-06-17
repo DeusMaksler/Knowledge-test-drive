@@ -70,6 +70,52 @@ public class UsersTable extends BaseFunc{
         readableWorkbook.close();
     }
 
+    public static User showUser(String login) throws IOException {
+        Workbook readableWorkbook = tableReadConnection(TABLE_NAME);
+        Sheet readableSheet = readableWorkbook.getSheetAt(0);
+
+        int userPos = searchUser(readableSheet, login);
+        Row userPosition = readableSheet.getRow(userPos);
+        User neededUser = getUser(userPosition);
+        readableWorkbook.close();
+        return  neededUser;
+    }
+
+    public static void  updateUser(User userData) throws IOException {
+        Workbook readableWorkbook = tableReadConnection(TABLE_NAME);
+        Sheet readableSheet = readableWorkbook.getSheetAt(0);
+
+        int userPos = searchUser(readableSheet, userData.getLogin());
+        Row oldUser = readableSheet.getRow(userPos);
+        oldUser.getCell(NAME_CELL).setCellValue(userData.getName());
+        oldUser.getCell(SURNAME_CELL).setCellValue(userData.getSurname());
+        oldUser.getCell(PATRONYMIC_CELL).setCellValue(userData.getPatronymic());
+        oldUser.getCell(GROUP_CELL).setCellValue(userData.getGroup());
+        oldUser.getCell(EMAIL_CELL).setCellValue(userData.getEmail());
+        oldUser.getCell(PASSWORD_CELL).setCellValue(userData.getPassword());
+
+        tableWriteConnection(TABLE_NAME, readableWorkbook);
+        readableWorkbook.close();
+    }
+
+    public static void remoteUser(String login) throws IOException {
+        Workbook readableWorkbook = tableReadConnection(TABLE_NAME);
+        Sheet readableSheet = readableWorkbook.getSheetAt(0);
+
+        int userPos = searchUser(readableSheet, login);
+        int quantity = getQuantityUsers(readableSheet);
+
+        if (userPos != quantity) {
+            User lastUser = getUser(readableSheet.getRow(quantity));
+            addUser(readableSheet.getRow(userPos), lastUser);
+        }
+        readableSheet.removeRow(readableSheet.getRow(quantity));
+        readableSheet.getRow(0).getCell(User.NUMBER_OF_FIELDS).setCellValue(quantity - 1);
+
+        tableWriteConnection(TABLE_NAME, readableWorkbook);
+        readableWorkbook.close();
+    }
+
     public static void changeStatus(String login, boolean status) throws IOException {
         Workbook readableWorkbook = tableReadConnection(TABLE_NAME);
         Sheet readableSheet = readableWorkbook.getSheetAt(0);
@@ -121,6 +167,22 @@ public class UsersTable extends BaseFunc{
         // entry answer
         activeCell = userPosition.createCell(ANSWER_CELL);
         activeCell.setCellValue(person.getAnswer());
+    }
+
+    private static User getUser(Row userRow) {
+        User person = new User();
+        person.setLogin(userRow.getCell(LOGIN_CELL).getStringCellValue());
+        person.setPassword(userRow.getCell(PASSWORD_CELL).getStringCellValue());
+        person.setRole(userRow.getCell(ROLE_CELL).getStringCellValue());
+        person.setStatus(userRow.getCell(STATUS_CELL).getBooleanCellValue());
+        person.setName(userRow.getCell(NAME_CELL).getStringCellValue());
+        person.setSurname(userRow.getCell(SURNAME_CELL).getStringCellValue());
+        person.setPatronymic(userRow.getCell(PATRONYMIC_CELL).getStringCellValue());
+        person.setGroup(userRow.getCell(GROUP_CELL).getStringCellValue());
+        person.setEmail(userRow.getCell(EMAIL_CELL).getStringCellValue());
+        person.setAnswer(userRow.getCell(ANSWER_CELL).getStringCellValue());
+
+        return person;
     }
 
     private static  int searchUser(Sheet sheet, String userLogin) {

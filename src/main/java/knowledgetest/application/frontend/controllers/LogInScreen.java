@@ -3,8 +3,11 @@ package knowledgetest.application.frontend.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import knowledgetest.application.Main;
+import knowledgetest.application.engine.model.Session;
 import knowledgetest.application.engine.service.Authorization;
 import knowledgetest.application.engine.service.Registration;
 import knowledgetest.application.frontend.common.DialogWindow;
@@ -20,7 +23,7 @@ public class LogInScreen {
     @FXML
     private TextField login;
     @FXML
-    private TextField password;
+    private PasswordField password;
     @FXML
     private Button logInButton;
     @FXML
@@ -36,6 +39,7 @@ public class LogInScreen {
             int logInStratus = logChecker.logInVerification(login.getText(), password.getText());
             switch (logInStratus) {
                 case (0):
+                    Main.session = new Session(login.getText(), logChecker.getAccRole(login.getText())); //сохранение информации о сессии
                     PageManage.loadPage((Stage) login.getScene().getWindow(), "home-screen.fxml", "Главный экран", 600, 400);
                     break;
                 case (1):
@@ -71,6 +75,7 @@ public class LogInScreen {
         } else {
             if (Registration.editPassword(log, password.getText())) { //успешная смена проля
                 //перезагрузка страницы
+                DialogWindow.createInfoDialog("Уведомление", "Пароль успешно изменён");
                 PageManage.loadPage((Stage) login.getScene().getWindow(), "log-in-screen.fxml", "Войдите в приложение", 555, 365);
             } else { //неверный формат проля
                 DialogWindow.createInfoDialog("Ошибка смены пароля", "Пароль должен содержать строчную и заглавную латинские буквы, цифру, спец символ, минммум 8 знаков");

@@ -5,12 +5,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import knowledgetest.application.engine.model.Session;
 import knowledgetest.application.engine.repository.UsersTable;
 
 import java.io.IOException;
-import java.net.URL;
 
 public class Main extends Application {
+    public static Session session;
+
     @Override
     public void start(Stage stage) throws IOException {
         new UsersTable();

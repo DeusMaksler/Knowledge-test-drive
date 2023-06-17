@@ -47,7 +47,7 @@ public class LogUpScreen {
                     case  (0):
                         reg.createAcc(loginField.getText(), passwordField.getText(), nameField.getText(), surnameField.getText(), patronymicField.getText(), groupField.getText(), emailField.getText(), answerField.getText());
                         DialogWindow.createInfoDialog("Регистрация", "Пользователь успешно зарегистрирован");
-                        //goToAuthorization((Stage) loginField.getScene().getWindow());//fix me
+                        goToAuthorization();
                         break;
                     case  (1):
                         DialogWindow.createInfoDialog(ERROR_NAME, "Логин неприемлемого формата, введите новый");
