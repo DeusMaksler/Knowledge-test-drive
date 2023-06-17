@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import knowledgetest.application.Main;
 import knowledgetest.application.engine.service.Registration;
 import knowledgetest.application.frontend.common.DialogWindow;
+import knowledgetest.application.frontend.common.PageManage;
 
 import java.io.IOException;
 
@@ -34,11 +35,7 @@ public class LogUpScreen {
     public LogUpScreen() throws IOException {}
 
     public void goToAuthorization() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("log-in-screen.fxml"));
-        Stage currentStage = (Stage) loginField.getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 555, 365);
-        currentStage.setScene(scene);
-        currentStage.setTitle("Войдите в приложение");
+        PageManage.loadPage((Stage) loginField.getScene().getWindow(), "log-in-screen.fxml", "Войдите в приложение", 555, 365);
     }
 
     public void registerUser() throws IOException {

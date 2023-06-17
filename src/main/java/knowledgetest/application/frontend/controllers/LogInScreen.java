@@ -1,17 +1,14 @@
 package knowledgetest.application.frontend.controllers;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import knowledgetest.application.Main;
 import knowledgetest.application.engine.service.Authorization;
 import knowledgetest.application.engine.service.Registration;
 import knowledgetest.application.frontend.common.DialogWindow;
+import knowledgetest.application.frontend.common.PageManage;
 
 import java.io.IOException;
 
@@ -39,8 +36,7 @@ public class LogInScreen {
             int logInStratus = logChecker.logInVerification(login.getText(), password.getText());
             switch (logInStratus) {
                 case (0):
-                    DialogWindow.createInfoDialog("Успех!", "Вы вошли бы, если бы я это прописал");
-                    //успешный вход //fix me
+                    PageManage.loadPage((Stage) login.getScene().getWindow(), "home-screen.fxml", "Главный экран", 600, 400);
                     break;
                 case (1):
                     DialogWindow.createInfoDialog(ERROR_NAME, "Пользователя с таким логином не существует или аккаунт заблокирован");
@@ -65,12 +61,7 @@ public class LogInScreen {
     }
 
     public void goToRegistration() throws IOException {
-        //сменить сцену в этом окне
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("log-up-screen.fxml"));
-        Stage stage = (Stage) login.getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 668, 490);
-        stage.setScene(scene);
-        stage.setTitle("Регистрация аккаунта");
+        PageManage.loadPage((Stage) login.getScene().getWindow(), "log-up-screen.fxml", "Регистрация аккаунта", 668, 490);
     }
 
     public void changePasswordAction() throws IOException {
@@ -79,7 +70,8 @@ public class LogInScreen {
             DialogWindow.createInfoDialog("Ошибка смены пароля", "Необходимо ввести пароль, отличающийся от старого");
         } else {
             if (Registration.editPassword(log, password.getText())) { //успешная смена проля
-                pageReload(); //перезагрузка страницы
+                //перезагрузка страницы
+                PageManage.loadPage((Stage) login.getScene().getWindow(), "log-in-screen.fxml", "Войдите в приложение", 555, 365);
             } else { //неверный формат проля
                 DialogWindow.createInfoDialog("Ошибка смены пароля", "Пароль должен содержать строчную и заглавную латинские буквы, цифру, спец символ, минммум 8 знаков");
             }
@@ -97,14 +89,6 @@ public class LogInScreen {
         toLogUpButton.setOpacity(0.0);
         changePasswordButton.setOpacity(1);
         changePasswordButton.setDisable(false);
-    }
-
-    private void pageReload() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("log-in-screen.fxml"));
-        Stage currentStage = (Stage) login.getScene().getWindow();
-        Scene scene = new Scene(fxmlLoader.load(), 555, 365);
-        currentStage.setScene(scene);
-        currentStage.setTitle("Войдите в приложение");
     }
 
     private boolean signIpFieldsNotEmpty() {
