@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import knowledgetest.application.engine.model.Session;
+import knowledgetest.application.engine.repository.QuestionsTable;
 import knowledgetest.application.engine.repository.UsersTable;
 
 import java.io.IOException;
@@ -15,7 +16,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        new UsersTable();
+        UsersTable.initialize();
+        QuestionsTable.initialize();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("log-in-screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 555, 365);
         stage.setTitle("Войдите в приложение");

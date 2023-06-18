@@ -25,35 +25,33 @@ public class UsersTable extends BaseFunc{
     private static final  int EMAIL_CELL = 8;
     private static final  int ANSWER_CELL = 9;
 
-    private final  String[] TABLE_HEADERS = {"login", "password", "role", "status", "name", "surname", "patronymic", "group", "email", "answer"};
-//    public static final User TEST_USER = new User("Tester", "ABCd9ef12*", "Тест", "Тестеров", "Тестович", "22БИБ9", "test@yandex.ru", "first");
-    private final User DEFAULT_ADMIN = new User("admin", "441650", "admin", "", "", "", "", "exemple@yandex.ru", "Дорога");
+    private static final  String[] TABLE_HEADERS = {"login", "password", "role", "status", "name", "surname", "patronymic", "group", "email", "answer"};
 
-    public UsersTable() {
-        if (!tableExist(TABLE_NAME)){ initialize();}
-    }
+    private static final User DEFAULT_ADMIN = new User("admin", "441650", "admin", "", "", "", "", "exemple@yandex.ru", "Дорога");
 
-    private void initialize() {
-        try {
-            Workbook currentTable = new XSSFWorkbook();
-            Sheet sheet = currentTable.createSheet("UserList");
-            //заполнение верхней строки названиями столбцов
-            int columnCount = 0;
-            Row row = sheet.createRow(0);
-            for (String title : TABLE_HEADERS) {
-                Cell cell = row.createCell(columnCount++);
-                cell.setCellValue(title);
-            }//колличество пользователей
-            Cell cell = row.createCell(columnCount);
-            cell.setCellValue(1);
+    public static void initialize() {
+        if (!tableExist(TABLE_NAME)){
+            try {
+                Workbook currentTable = new XSSFWorkbook();
+                Sheet sheet = currentTable.createSheet("UserList");
+                //заполнение верхней строки названиями столбцов
+                int columnCount = 0;
+                Row row = sheet.createRow(0);
+                for (String title : TABLE_HEADERS) {
+                    Cell cell = row.createCell(columnCount++);
+                    cell.setCellValue(title);
+                }//колличество пользователей
+                Cell cell = row.createCell(columnCount);
+                cell.setCellValue(1);
 
-            row = sheet.createRow(1);
-            addUser(row, DEFAULT_ADMIN);
+                row = sheet.createRow(1);
+                addUser(row, DEFAULT_ADMIN);
 
-            // сохранение в файл специализированным методом
-            BaseFunc.tableWriteConnection(TABLE_NAME, currentTable);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+                // сохранение в файл специализированным методом
+                BaseFunc.tableWriteConnection(TABLE_NAME, currentTable);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
