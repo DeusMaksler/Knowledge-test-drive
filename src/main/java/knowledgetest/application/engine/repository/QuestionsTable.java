@@ -1,5 +1,6 @@
 package knowledgetest.application.engine.repository;
 
+import knowledgetest.application.engine.model.QSection;
 import knowledgetest.application.engine.model.Question;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -48,7 +49,7 @@ public class QuestionsTable extends QuestionsSheet{
         //создание оглавления
         decorateSection(sheet);
         //добавление информации на TestInfo
-        changeSectionInfo(currentTable.getSheetAt(INFO_SHEET), sectionName, 0, true);
+        changeSectionInfo(currentTable.getSheetAt(INFO_SHEET), new QSection(sectionName));
         tableWriteConnection(TABLE_NAME, currentTable);
         currentTable.close();
     }
@@ -116,9 +117,24 @@ public class QuestionsTable extends QuestionsSheet{
         currentTable.close();
     }
 
+    //запросы к таблице
+    public static QSection[] getSectionsList() throws IOException {
+        Workbook currentTable = tableReadConnection(TABLE_NAME);
+        Sheet infoSheet = currentTable.getSheetAt(INFO_SHEET);
+
+        int quantity = getQuantitySections(infoSheet);
+        QSection[] sectionsList = new QSection[quantity];
+        for (int i = 1; i < quantity+1; i++) {
+            sectionsList[i-1] = getSectionInfo(infoSheet.getRow(i));
+        }
+
+        currentTable.close();
+        return sectionsList;
+    }
+
     //изменяет информацию о разделе по имени
-    private static void changeSectionInfo(Sheet sheet, String sectionName, int sectionSize, boolean sectionStatus) {
-        int sectionPosition = searchSection(sheet, sectionName);
+    private static void changeSectionInfo(Sheet sheet, QSection section) {
+        int sectionPosition = searchSection(sheet, section.getName());
         Row sectionRow;
         switch (sectionPosition) {
             case -1: { //создание первой секции
@@ -137,9 +153,8 @@ public class QuestionsTable extends QuestionsSheet{
                 break;
             }
         }
-
         //Внесение данных о разделе
-        addSectionInfo(sectionRow, sectionName, sectionSize, sectionStatus);
+        addSectionInfo(sectionRow, section);
     }
 
     private static void removeSection(Sheet sheet, String sectionName) {
@@ -147,10 +162,7 @@ public class QuestionsTable extends QuestionsSheet{
         int quantity = getQuantitySections(sheet);
         Row row = sheet.getRow(quantity);
         if (position != quantity) { //сбор данных последнего
-            String name = row.createCell(SECTION_NAME).getStringCellValue();
-            int size = (int) row.createCell(SECTION_SIZE).getNumericCellValue();
-            boolean status = row.createCell(SECTION_STATUS).getBooleanCellValue();
-            addSectionInfo(sheet.getRow(position), name, size, status);
+            addSectionInfo(sheet.getRow(position), getSectionInfo(row));
         }
         sheet.removeRow(sheet.getRow(quantity));
         changeQuantitySections(sheet, -1);
@@ -181,13 +193,21 @@ public class QuestionsTable extends QuestionsSheet{
         }
     }
 
-    //находит индекс строки рездела по имени(и другие исходы)
-    private static void addSectionInfo(Row row, String sectionName, int sectionSize, boolean sectionStatus){
-        row.createCell(SECTION_NAME).setCellValue(sectionName);
-        row.createCell(SECTION_SIZE).setCellValue(sectionSize);
-        row.createCell(SECTION_STATUS).setCellValue(sectionStatus);
+    private static void addSectionInfo(Row row, QSection section) {
+        row.createCell(SECTION_NAME).setCellValue(section.getName());
+        row.createCell(SECTION_SIZE).setCellValue(section.getSize());
+        row.createCell(SECTION_STATUS).setCellValue(section.isStatus());
     }
 
+    private static QSection getSectionInfo(Row sectionRow) {
+        QSection section = new QSection();
+        section.setName(sectionRow.getCell(SECTION_NAME).getStringCellValue());
+        section.setSize((int) sectionRow.getCell(SECTION_SIZE).getNumericCellValue());
+        section.setStatus(sectionRow.getCell(SECTION_STATUS).getBooleanCellValue());
+        return section;
+    }
+
+    //находит индекс строки рездела по имени(и другие исходы)
     private static void changeSectionSize(Row row, int delta) {
         Cell sizeCell = row.getCell(SECTION_SIZE);
         int oldValue = (int) sizeCell.getNumericCellValue();
