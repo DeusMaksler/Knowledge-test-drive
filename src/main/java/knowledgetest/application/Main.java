@@ -13,11 +13,13 @@ import java.io.IOException;
 
 public class Main extends Application {
     public static Session session;
+    public static Stage currentStage;
 
     @Override
     public void start(Stage stage) throws IOException {
         UsersTable.initialize();
         QuestionsTable.initialize();
+        currentStage = stage;
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("log-in-screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 555, 365);
         stage.setTitle("Войдите в приложение");

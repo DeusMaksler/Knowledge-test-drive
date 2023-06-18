@@ -123,6 +123,9 @@ public class QuestionsTable extends QuestionsSheet{
         Sheet infoSheet = currentTable.getSheetAt(INFO_SHEET);
 
         int quantity = getQuantitySections(infoSheet);
+
+        if (quantity == 0){ return new QSection[0];}//исключение, когда разделов нет
+
         QSection[] sectionsList = new QSection[quantity];
         for (int i = 1; i < quantity+1; i++) {
             sectionsList[i-1] = getSectionInfo(infoSheet.getRow(i));
