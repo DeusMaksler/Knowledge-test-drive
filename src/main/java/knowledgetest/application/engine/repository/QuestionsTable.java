@@ -93,7 +93,7 @@ public class QuestionsTable extends QuestionsSheet{
         currentTable.close();
     }
 
-    public static void changeQuestion(String sectionName,int questionId, Question enteredQuestion) throws IOException {
+    public static void changeQuestion(String sectionName, int questionId, Question enteredQuestion) throws IOException {
         Workbook currentTable = tableReadConnection(TABLE_NAME);
         // изменили вопрос
         Sheet sectionSheet = currentTable.getSheet(sectionName);

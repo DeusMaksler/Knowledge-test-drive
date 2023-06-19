@@ -1,9 +1,11 @@
 package knowledgetest.application.frontend.controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Pane;
 import knowledgetest.application.Main;
 import knowledgetest.application.engine.model.Question;
 import knowledgetest.application.engine.repository.QuestionsTable;
@@ -37,5 +39,9 @@ public class QuestionSectionScreen {
 
     public static void rebootPage() throws IOException {
         PageManage.loadPage(currentStage, "question-section-screen.fxml", "Вопросы из раздела " + sectionName, 830, 400);
+    }
+
+    public void createQuestion() throws IOException {
+        PageManage.createWindow("question-form-screen.fxml", "Создание вопроса", 600, 400);
     }
 }

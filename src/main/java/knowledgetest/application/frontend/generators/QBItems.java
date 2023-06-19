@@ -8,6 +8,7 @@ import knowledgetest.application.Main;
 import knowledgetest.application.engine.model.QSection;
 import knowledgetest.application.engine.model.Question;
 import knowledgetest.application.engine.repository.QuestionsTable;
+import knowledgetest.application.frontend.common.DialogWindow;
 import knowledgetest.application.frontend.common.PageManage;
 import knowledgetest.application.frontend.controllers.QuestionBaseScreen;
 import knowledgetest.application.frontend.controllers.QuestionSectionScreen;
@@ -53,7 +54,9 @@ public class QBItems {
             Button openSection = new Button("Открыть раздел");
             openSection.setOnAction(event -> {
                 try {
-                    Main.session.setEditableSection(section.getName());
+                    Main.session.setEditableSection(section.getName()); // не совсем корректно работает // fix me
+                    DialogWindow.createInfoDialog("Изменено на", section.getName());
+                    DialogWindow.createInfoDialog("а в мейне", Main.session.getEditableSection());
                     PageManage.loadPage(currentStage, "question-section-screen.fxml", "Вопросы из раздела " + section.getName(), 830, 400);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -80,12 +83,14 @@ public class QBItems {
         for (int i = 0; i < questionList.length; i++) {
             Question question = questionList[i];
             TitledPane pane = new TitledPane();
-            pane.setText("ID: " + i);
-            int questionId = i;
+            int questionId = i + 1;
+            pane.setText("ID: " + questionId);
 
             VBox content = new VBox();
-            TextArea phrasing= new TextArea("Вопрос: " + question.getPhrasing());
+            content.getChildren().add(new Label("Формулировка вопроса:"));
+            TextArea phrasing= new TextArea(question.getPhrasing());
             phrasing.setEditable(false);
+            phrasing.setPrefRowCount(5);
             content.getChildren().add(phrasing);
 
             HBox digitContain = new HBox();
@@ -106,6 +111,7 @@ public class QBItems {
             rightContain.setSpacing(10);
             content.getChildren().add(rightContain);
 
+            //создание полей вопросов под варианты ответов
             HBox firstVarContain = new HBox();
             TextField firstField = new TextField();
             firstField.setText(question.getVariants()[0]);
@@ -146,6 +152,26 @@ public class QBItems {
                 }
             });
 
+            Button saveData = new Button("Сохранить изменения");
+            saveData.setOnAction(click -> {
+                question.setPhrasing(phrasing.getText());
+                question.setCheckDigit(Integer.parseInt(digitField.getText()));
+                question.setRightChoice(Integer.parseInt(rightField.getText()));
+                if (question.isYnType()) {
+                    question.setVariants(new String[]{firstField.getText(), secondField.getText()});
+                } else {
+                    question.setVariants(new String[]{firstField.getText(), secondField.getText(), thirdField.getText(), fourthField.getText()});
+                }
+                try {
+                    QuestionsTable.changeQuestion(sectionName, questionId, question);
+                    QuestionSectionScreen.rebootPage();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            saveData.setDisable(true);
+            saveData.setOpacity(0);
+
             Button changeData = new Button("Изменить данные");
             changeData.setOnAction(event -> {
                 phrasing.setEditable(true);
@@ -157,29 +183,11 @@ public class QBItems {
                     thirdField.setEditable(true);
                     fourthField.setEditable(true);
                 }
-
-                Button saveData = new Button("Сохранить изменения");
-                saveData.setOnAction(click -> {
-                    question.setPhrasing(phrasing.getText());
-                    question.setCheckDigit(Integer.parseInt(digitField.getText()));
-                    question.setRightChoice(Integer.parseInt(rightField.getText()));
-                    if (question.isYnType()) {
-                        question.setVariants(new String[]{firstField.getText(), secondField.getText()});
-                    } else {
-                        question.setVariants(new String[]{firstField.getText(), secondField.getText(), thirdField.getText(), fourthField.getText()});
-                    }
-
-                    try {
-                        QuestionsTable.changeQuestion(sectionName, questionId, question);
-                        QuestionSectionScreen.rebootPage();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                });
+                saveData.setDisable(false);
+                saveData.setOpacity(1);
             });
 
-            btns.getChildren().addAll(del, changeData);
+            btns.getChildren().addAll(del, changeData, saveData);
             btns.setSpacing(10);
 
             content.getChildren().add(btns);

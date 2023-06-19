@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="knowledgetest.application.frontend.controllers.QuestionFormScreen">
+   <children>
+      <TextArea fx:id="phrasingArea" layoutX="15.0" layoutY="40.0" prefHeight="121.0" prefWidth="570.0" wrapText="true" />
+      <Label layoutX="234.0" layoutY="14.0" text="Формулировка вопроса" />
+      <CheckBox fx:id="ynBox" layoutX="15.0" layoutY="183.0" mnemonicParsing="false" onMouseClicked="#changeQuestionType" text="Yes/No Question" />
+      <Label layoutX="403.0" layoutY="182.0" text="Номер верного варианта" />
+      <TextField fx:id="rightField" layoutX="554.0" layoutY="178.0" prefHeight="26.0" prefWidth="30.0" />
+      <Label layoutX="15.0" layoutY="251.0" text="Первый вариант" />
+      <TextField fx:id="firstField" layoutX="121.0" layoutY="247.0" />
+      <Label layoutX="313.0" layoutY="251.0" text="Второй вариант" />
+      <TextField fx:id="thirdField" layoutX="121.0" layoutY="309.0" />
+      <Label fx:id="thirdLabel" layoutX="14.0" layoutY="313.0" text="Третий вариант" />
+      <TextField fx:id="secondField" layoutX="434.0" layoutY="247.0" />
+      <TextField fx:id="fourthField" layoutX="434.0" layoutY="309.0" />
+      <Label fx:id="fourthLabel" layoutX="313.0" layoutY="313.0" text="Четвертый вариант" />
+      <Button fx:id="saveButton" layoutX="254.0" layoutY="360.0" mnemonicParsing="false" onMouseClicked="#saveQuestion" text="Сохранить вопрос" />
+   </children>
+</AnchorPane>
