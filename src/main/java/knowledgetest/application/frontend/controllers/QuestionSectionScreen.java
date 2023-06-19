@@ -28,6 +28,7 @@ public class QuestionSectionScreen {
             header.setText("Разделы отсутствуют");
         } else {
             header.setText("Список вопросов");
+            scrollContainer.setContent(QBItems.showQuestions(sectionName, questions));
         }
     }
     public void backWindow() throws IOException {
@@ -35,6 +36,6 @@ public class QuestionSectionScreen {
     }
 
     public static void rebootPage() throws IOException {
-        PageManage.loadPage(currentStage, "question-section-screen.fxml", "Вопросы из раздела " + sectionName, 800, 400);
+        PageManage.loadPage(currentStage, "question-section-screen.fxml", "Вопросы из раздела " + sectionName, 830, 400);
     }
 }

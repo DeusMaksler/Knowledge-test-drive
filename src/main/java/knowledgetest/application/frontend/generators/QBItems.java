@@ -54,7 +54,7 @@ public class QBItems {
             openSection.setOnAction(event -> {
                 try {
                     Main.session.setEditableSection(section.getName());
-                    PageManage.loadPage(currentStage, "question-section-screen.fxml", "Вопросы из раздела " + section.getName(), 800, 400);
+                    PageManage.loadPage(currentStage, "question-section-screen.fxml", "Вопросы из раздела " + section.getName(), 830, 400);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
