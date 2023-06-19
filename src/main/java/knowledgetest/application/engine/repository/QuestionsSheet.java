@@ -1,5 +1,6 @@
 package knowledgetest.application.engine.repository;
 
+import knowledgetest.application.engine.model.QSection;
 import knowledgetest.application.engine.model.Question;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -27,6 +28,17 @@ public class QuestionsSheet extends BaseFunc{
             cell.setCellValue("variant " + (j + 1));
         }
         row.createCell(ORDER).setCellValue(0);
+    }
+
+    protected static Question[]  getQuestionList(Sheet sheet) {
+        int order = getOrder(sheet);
+        if (order == 0){ return new Question[0];}//исключение, когда вопросов нет
+
+        Question[] questionList = new Question[order];
+        for (int i = 1; i < order+1; i++) {
+            questionList[i-1] = getQuestion(sheet.getRow(i));
+        }
+        return questionList;
     }
 
     //взаимодействие с пользователями

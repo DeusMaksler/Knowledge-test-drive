@@ -1,6 +1,7 @@
 package knowledgetest.application.frontend.generators;
 
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import knowledgetest.application.engine.model.User;
 import knowledgetest.application.engine.repository.UsersTable;
@@ -28,6 +29,8 @@ public class Tabs {
             Label  statusLabel= new Label(person.getStatus() ? "Статус: активен" : "Статус: заблокирован");
             content.getChildren().add(statusLabel);
             //Функционал назначения роли
+
+            HBox btns = new HBox();
             Button changeRoleButton;
             if (person.getRole().equals("user")) {
                 changeRoleButton = new Button("Сделать аналитиком");
@@ -52,7 +55,7 @@ public class Tabs {
                     }
                 });
             }
-            content.getChildren().add(changeRoleButton);
+
             //Функционал (раз)блокировки
             Button changeStatusButton;
             if (person.getStatus()) {
@@ -76,7 +79,12 @@ public class Tabs {
                     }
                 });
             }
-            content.getChildren().add(changeStatusButton);
+
+            //упаковка кнопок
+            btns.getChildren().addAll(changeRoleButton, changeStatusButton);
+            btns.setSpacing(10);
+            content.getChildren().add(btns);
+
             //добавление раздела одного пользователя
             pane.setContent(content);
             usersView.getPanes().add(pane);

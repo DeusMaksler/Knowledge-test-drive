@@ -2,9 +2,9 @@ package knowledgetest.application.frontend.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import knowledgetest.application.Main;
+import javafx.scene.layout.HBox;
 import knowledgetest.application.engine.model.QSection;
 import knowledgetest.application.engine.repository.QuestionsTable;
 import knowledgetest.application.frontend.common.DialogWindow;
@@ -12,16 +12,12 @@ import knowledgetest.application.frontend.common.PageManage;
 import knowledgetest.application.frontend.generators.QBItems;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 
 import static knowledgetest.application.Main.currentStage;
 
 public class QuestionBaseScreen {
-
-
     @FXML
-    private  Button goToHomeButton;
-
+    private Label header;
     @FXML
     private AnchorPane sectionsPane;
 
@@ -29,8 +25,9 @@ public class QuestionBaseScreen {
     void initialize() throws IOException {
         QSection[] sectionsList = QuestionsTable.getSectionsList();
         if (sectionsList.length == 0){
-            DialogWindow.createInfoDialog("Разделы отсутствуют", "Пока в базу не добавлено ни одного раздела");
+            header.setText("Разделы отсутствуют");
         } else {
+            header.setText("Список разделов");
             sectionsPane.getChildren().add(QBItems.showSections(sectionsList));
         }
     }

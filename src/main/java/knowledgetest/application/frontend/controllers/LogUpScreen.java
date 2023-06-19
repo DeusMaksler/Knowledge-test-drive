@@ -12,6 +12,8 @@ import knowledgetest.application.frontend.common.PageManage;
 
 import java.io.IOException;
 
+import static knowledgetest.application.Main.currentStage;
+
 public class LogUpScreen {
     private Registration reg = new Registration();
     private final String ERROR_NAME= "Ошибка регистрации";
@@ -35,7 +37,7 @@ public class LogUpScreen {
     public LogUpScreen() throws IOException {}
 
     public void goToAuthorization() throws IOException {
-        PageManage.loadPage((Stage) loginField.getScene().getWindow(), "log-in-screen.fxml", "Войдите в приложение", 555, 365);
+        PageManage.loadPage(currentStage, "log-in-screen.fxml", "Войдите в приложение", 555, 365);
     }
 
     public void registerUser() throws IOException {

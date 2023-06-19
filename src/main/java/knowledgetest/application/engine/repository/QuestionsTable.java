@@ -135,6 +135,15 @@ public class QuestionsTable extends QuestionsSheet{
         return sectionsList;
     }
 
+    public static Question[] getSectionQuestions(String sectionName) throws IOException {
+        Workbook currentTable = tableReadConnection(TABLE_NAME);
+        Sheet sectionSheet = currentTable.getSheet(sectionName);
+
+        Question[] sectionQuestions = getQuestionList(sectionSheet);
+        currentTable.close();
+        return  sectionQuestions;
+    }
+
     //изменяет информацию о разделе по имени
     private static void changeSectionInfo(Sheet sheet, QSection section) {
         int sectionPosition = searchSection(sheet, section.getName());

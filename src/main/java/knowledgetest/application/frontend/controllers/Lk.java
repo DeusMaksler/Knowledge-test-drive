@@ -13,6 +13,8 @@ import knowledgetest.application.frontend.generators.Tabs;
 
 import java.io.IOException;
 
+import static knowledgetest.application.Main.currentStage;
+
 public class Lk {
     private final String ERROR_NAME = "Ошибка изменения";
     private User currentAcc;
@@ -108,7 +110,7 @@ public class Lk {
         if (deleteAnswer.equals("удалить")){
             DialogWindow.createInfoDialog("Удаление аккаунта", "Аккаунт успешно удалён");
             UsersTable.remoteUser(currentAcc.getLogin());
-            PageManage.loadPage((Stage) activeFieldsButton.getScene().getWindow(), "log-in-screen.fxml", "Войдите в приложение", 555, 365);
+            PageManage.loadPage(currentStage, "log-in-screen.fxml", "Войдите в приложение", 555, 365);
         }
     }
 

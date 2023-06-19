@@ -3,6 +3,7 @@ package knowledgetest.application.engine.model;
 public class Session {
     private String sessionUserLogin;
     private String sessionUserAccess;
+    private String editableSection;
 
     public Session(){}
 
@@ -16,4 +17,7 @@ public class Session {
 
     public String getSessionUserLogin() { return sessionUserLogin;}
     public void setSessionUserLogin(String sessionUserLogin) { this.sessionUserLogin = sessionUserLogin;}
+
+    public String getEditableSection() { return editableSection;}
+    public void setEditableSection(String editableSection) { this.editableSection = editableSection;}
 }
