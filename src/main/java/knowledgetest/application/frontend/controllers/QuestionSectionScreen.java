@@ -17,7 +17,7 @@ import java.io.IOException;
 import static knowledgetest.application.Main.currentStage;
 
 public class QuestionSectionScreen {
-    private static final String sectionName = Main.session.getEditableSection();
+    private static String sectionName;
     @FXML
     private Label header;
     @FXML
@@ -25,6 +25,7 @@ public class QuestionSectionScreen {
 
     @FXML
     void initialize() throws IOException {
+        sectionName = Main.session.getEditableSection();
         Question[] questions = QuestionsTable.getSectionQuestions(sectionName);
         if (questions.length == 0){
             header.setText("Разделы отсутствуют");

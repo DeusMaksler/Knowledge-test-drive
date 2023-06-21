@@ -7,6 +7,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import knowledgetest.application.Main;
 import knowledgetest.application.engine.model.Session;
+import knowledgetest.application.engine.repository.UsersTable;
 import knowledgetest.application.engine.service.Authorization;
 import knowledgetest.application.engine.service.Registration;
 import knowledgetest.application.frontend.common.DialogWindow;
@@ -17,7 +18,7 @@ import java.io.IOException;
 import static knowledgetest.application.Main.currentStage;
 
 public class LogInScreen {
-    private Authorization logChecker = new Authorization();
+    private Authorization logChecker;
     private  final String ERROR_NAME = "Ошибка авторизации";
     @FXML
     private Label logInLabel;
@@ -31,9 +32,10 @@ public class LogInScreen {
     private Button toLogUpButton;
     @FXML
     private Button changePasswordButton;
-
-
-    public LogInScreen() throws IOException {}
+    @FXML
+    void initialize() throws IOException {
+        logChecker = new Authorization();
+    }
 
     public void checkEnteredData() throws IOException {
         if (signIpFieldsNotEmpty()){ //валидация полей формы
@@ -54,7 +56,7 @@ public class LogInScreen {
                     if (logChecker.checkSecretAnswer(login.getText(), enterAnswer)) {
                         changePasswordProcedure();
                     } else {
-                        logChecker.banUser(login.getText());
+                        UsersTable.changeStatus(login.getText(), false);
                         DialogWindow.createInfoDialog(ERROR_NAME, "Ваш аккаунт заблогирован");
                         //обращение к админу //fix me
                     }

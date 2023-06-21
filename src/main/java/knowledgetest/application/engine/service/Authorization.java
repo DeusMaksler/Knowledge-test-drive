@@ -18,7 +18,7 @@ public class Authorization {
     //этот метод возвращает коды соответствующих состояний
     public int logInVerification(String log, String pass){
         if (!this.accountList.containsKey(log)) { return 1;} //Пользователь отсутствует
-        if (checkPassword(log,pass)){ return 0;} //Пароль верный
+        if (checkPassword(log, pass)){ return 0;} //Пароль верный
         //проверяет и сохраняет кол-во неверных вводов для логинов
         int wrongAttempts = countAttempts(log);
         if (wrongAttempts == QUANTITY_ATTEMPTS){ return 3; } //Достигнут лимит неверных вводов
@@ -38,10 +38,6 @@ public class Authorization {
 
     public String getAccRole(String login) {
         return this.accountList.get(login)[1];
-    }
-
-    public void banUser(String userLogin) throws IOException {
-        UsersTable.changeStatus(userLogin, false);
     }
 
     private int countAttempts(String login) {

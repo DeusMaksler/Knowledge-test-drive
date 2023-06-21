@@ -23,62 +23,43 @@ public class Tabs {
             VBox content = new VBox();
             content.getChildren().add(new Label("Логин: " + person.getLogin()));
 
-            Label roleLabel = new Label("Роль: " + (person.getRole().equals("user") ? "Пользователь" : "Аналитик"));
+            Label roleLabel = new Label( (person.getRole().equals("user") ? "Роль: Пользователь" : "Роль: Аналитик"));
             content.getChildren().add(roleLabel);
 
             Label  statusLabel= new Label(person.getStatus() ? "Статус: активен" : "Статус: заблокирован");
             content.getChildren().add(statusLabel);
-            //Функционал назначения роли
 
             HBox btns = new HBox();
-            Button changeRoleButton;
-            if (person.getRole().equals("user")) {
-                changeRoleButton = new Button("Сделать аналитиком");
-                changeRoleButton.setOnAction(event -> {
-                    try {
-                        UsersTable.changeRole(person.getLogin(), "analyst");
-                        roleLabel.setText("Аналитик");
-                        DialogWindow.createInfoDialog("Смена роли", "Роль пользователя успешно изменена");
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-            } else {
-                changeRoleButton = new Button("Сделать пользователем");
-                changeRoleButton.setOnAction(event -> {
-                    try {
+
+            //Функционал назначения роли
+            Button changeRoleButton = new Button(person.getRole().equals("user") ? "Сделать аналитиком" : "Сделать пользователем");
+            changeRoleButton.setOnAction(event -> {
+                try {
+                    if (roleLabel.getText().equals("Роль: Пользователь")) {
+                    UsersTable.changeRole(person.getLogin(), "analyst");
+                    roleLabel.setText("Роль: Аналитик");
+                    changeRoleButton.setText("Сделать пользователем");
+                    } else {
                         UsersTable.changeRole(person.getLogin(), "user");
-                        roleLabel.setText("Пользователь");
-                        DialogWindow.createInfoDialog("Смена роли", "Роль пользователя успешно изменена");
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        roleLabel.setText("Роль: Пользователь");
+                        changeRoleButton.setText("Сделать аналитиком");
                     }
-                });
-            }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
 
             //Функционал (раз)блокировки
-            Button changeStatusButton;
-            if (person.getStatus()) {
-                changeStatusButton = new Button("Заблокировать пользователя");
-                changeStatusButton.setOnAction(event -> {
-                    try {
-                        UsersTable.changeStatus(person.getLogin(), false);
-                        DialogWindow.createInfoDialog("Блокировка пользователя", "Пользователь успешно заблокирован");
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-            } else {
-                changeStatusButton = new Button("Разблокировать");
-                changeStatusButton.setOnAction(event -> {
-                    try {
-                        UsersTable.changeStatus(person.getLogin(), true);
-                        DialogWindow.createInfoDialog("Разблокировка пользователя", "Пользователь успешно разблокирован");
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-            }
+            Button changeStatusButton = new Button(person.getStatus() ? "Заблокировать" : "Разблокировать");
+            changeStatusButton.setOnAction(event -> {
+                try {
+                    UsersTable.changeStatus(person.getLogin());
+                    statusLabel.setText(statusLabel.getText().equals("Статус: активен") ? "Статус: заблокирован" : "Статус: активен");
+                    changeStatusButton.setText(statusLabel.getText().equals("Статус: активен") ? "Заблокировать" : "Разблокировать");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
 
             //упаковка кнопок
             btns.getChildren().addAll(changeRoleButton, changeStatusButton);

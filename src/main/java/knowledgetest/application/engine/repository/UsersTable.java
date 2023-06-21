@@ -127,6 +127,18 @@ public class UsersTable extends BaseFunc{
         readableWorkbook.close();
     }
 
+    public static void changeStatus(String login) throws IOException {
+        Workbook readableWorkbook = tableReadConnection(TABLE_NAME);
+        Sheet readableSheet = readableWorkbook.getSheetAt(0);
+
+        int userPos = searchUser(readableSheet, login);
+        Cell statusCell = readableSheet.getRow(userPos).getCell(STATUS_CELL);
+        boolean oldStatusValue = statusCell.getBooleanCellValue();
+        statusCell.setCellValue(!oldStatusValue);
+        tableWriteConnection(TABLE_NAME, readableWorkbook);
+        readableWorkbook.close();
+    }
+
     public static void changeRole(String login, String status) throws IOException {
         Workbook readableWorkbook = tableReadConnection(TABLE_NAME);
         Sheet readableSheet = readableWorkbook.getSheetAt(0);

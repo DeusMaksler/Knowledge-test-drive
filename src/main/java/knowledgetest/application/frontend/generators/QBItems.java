@@ -54,9 +54,7 @@ public class QBItems {
             Button openSection = new Button("Открыть раздел");
             openSection.setOnAction(event -> {
                 try {
-                    Main.session.setEditableSection(section.getName()); // не совсем корректно работает // fix me
-                    DialogWindow.createInfoDialog("Изменено на", section.getName());
-                    DialogWindow.createInfoDialog("а в мейне", Main.session.getEditableSection());
+                    Main.session.setEditableSection(section.getName());
                     PageManage.loadPage(currentStage, "question-section-screen.fxml", "Вопросы из раздела " + section.getName(), 830, 400);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
