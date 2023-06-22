@@ -1,5 +1,6 @@
 package knowledgetest.application.frontend.generators;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -12,6 +13,7 @@ import knowledgetest.application.frontend.common.DialogWindow;
 import knowledgetest.application.frontend.common.PageManage;
 import knowledgetest.application.frontend.controllers.QuestionBaseScreen;
 import knowledgetest.application.frontend.controllers.QuestionSectionScreen;
+import knowledgetest.application.frontend.controllers.TestingScreen;
 
 import java.io.IOException;
 
@@ -193,5 +195,120 @@ public class QBItems {
             questions.getPanes().add(pane);
         }
         return questions;
+    }
+
+    public static MenuButton createSectionMenu() throws IOException {
+        QSection[] sections = QuestionsTable.getSectionsList();
+        MenuButton sectionMenu = new MenuButton("Тест по разделу");
+        if (sections.length != 0){
+            for (QSection section : sections) {
+                if(section.getSize() != 0) {
+                    MenuItem item = new MenuItem(section.getName());
+                    item.setOnAction(event -> {
+                        try {
+                            TestingScreen.generalType = false;
+                            TestingScreen.questionsList = QuestionsTable.getSectionQuestions(section.getName());
+                            TestingScreen.iter = 0;
+                            TestingScreen.rightResults = 0;
+                            TestingScreen.selectedSectionName = section.getName();
+                            PageManage.loadPage(currentStage, "testing-screen.fxml", "Тест по разделу " + section.getName(), 522, 400);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    sectionMenu.getItems().add(item);
+                }
+            }
+        }
+        return sectionMenu;
+    }
+
+    public static Button createTestButton() throws IOException {
+        Button generalTestButton = new Button("Общий тест");
+
+        QSection[] sectionList = QuestionsTable.getSectionsList();
+        int count = 0;
+        for (QSection section : sectionList) {
+            if (section.getSize() >= 15){ count++;}
+        }
+
+        if (count >= 5){
+            generalTestButton.setOnAction(event -> {
+                //fix me изменить размеры
+                try {
+                    TestingScreen.generalType = true;
+                    PageManage.loadPage(currentStage, "testing-screen.fxml", "Полный тест", 400, 600);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        } else {
+            generalTestButton.setTooltip(new Tooltip("В данный момент прохождение теста не доступно"));
+            generalTestButton.setDisable(true);
+        }
+
+
+        return generalTestButton;
+    }
+
+    public static AnchorPane showTestForm(Question question){
+        int right = question.getRightChoice() - 1;
+
+        AnchorPane formPane = new AnchorPane();
+        formPane.setPrefHeight(300);
+        formPane.setPrefWidth(500);
+        formPane.setLayoutX(11);
+        formPane.setLayoutY(50);
+        //формулировка вопроса
+        TextArea questionWording = new TextArea(question.getPhrasing());
+        questionWording.setPrefWidth(472);
+        questionWording.setPrefHeight(135);
+        questionWording.setLayoutX(14);
+        questionWording.setLayoutX(14);
+        formPane.getChildren().add(questionWording);
+        //первые две кнопки
+        formPane.getChildren().add(createAnswerButtons(0,  165, question.getVariants(), right));
+        //вторые две кнопки(опционально)
+        if (!question.isYnType()){
+            formPane.getChildren().add(createAnswerButtons(2,  236, question.getVariants(), right));
+        }
+        return formPane;
+    }
+
+    private static ButtonBar createAnswerButtons(int startIndex, int layoutY, String[] variants, int right) {
+        ButtonBar btnBar = new ButtonBar();
+        btnBar.setPrefHeight(42);
+        btnBar.setPrefWidth(472);
+        btnBar.setPadding(new Insets(0, 0,0, -20));
+        btnBar.setLayoutX(14);
+        btnBar.setLayoutY(layoutY);
+
+        for (int i = startIndex; i < startIndex + 2; i++) {
+            Button btnAnswer = new Button(variants[i]);
+            btnAnswer.setPrefWidth(230);
+            btnAnswer.setPrefHeight(42);
+            if (i == right) { //правильный вариант
+                btnAnswer.setOnAction(event -> {
+                    TestingScreen.rightResults++;
+                    TestingScreen.iter++;
+                    try {
+                        PageManage.loadPage(currentStage, "testing-screen.fxml", "Тест по разделу " + TestingScreen.selectedSectionName, 522, 400);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+            } else {
+                btnAnswer.setOnAction(event -> {
+                    TestingScreen.iter++;
+                    try {
+                        PageManage.loadPage(currentStage, "testing-screen.fxml", "Тест по разделу " + TestingScreen.selectedSectionName, 522, 400);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+            }
+            btnBar.getButtons().add(btnAnswer);
+        }
+        return btnBar;
     }
 }

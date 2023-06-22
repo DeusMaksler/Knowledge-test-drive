@@ -1,10 +1,8 @@
 package knowledgetest.application.frontend.controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import knowledgetest.application.engine.model.QSection;
 import knowledgetest.application.engine.repository.QuestionsTable;
 import knowledgetest.application.frontend.common.DialogWindow;

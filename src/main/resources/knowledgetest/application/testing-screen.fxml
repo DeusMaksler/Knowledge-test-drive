@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="testingScreen" prefHeight="402.0" prefWidth="522.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="knowledgetest.application.frontend.controllers.TestingScreen">
+   <children>
+      <Button fx:id="cancelTestButton" layoutX="412.0" layoutY="365.0" mnemonicParsing="false" onMouseClicked="#cancelTest" text="Отменить тест" />
+   </children>
+</AnchorPane>
