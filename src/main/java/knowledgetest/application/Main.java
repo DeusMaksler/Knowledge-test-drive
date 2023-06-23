@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import knowledgetest.application.engine.model.Session;
 import knowledgetest.application.engine.repository.QuestionsTable;
+import knowledgetest.application.engine.repository.RecordsTable;
 import knowledgetest.application.engine.repository.UsersTable;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ public class Main extends Application {
     public void start(Stage stage) throws IOException {
         UsersTable.initialize();
         QuestionsTable.initialize();
+        RecordsTable.initialize();
         currentStage = stage;
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("log-in-screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 555, 365);

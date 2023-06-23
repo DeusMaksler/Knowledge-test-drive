@@ -1,22 +1,14 @@
 package knowledgetest.application.engine.model;
 
 public class Session {
-    private String sessionUserLogin;
-    private String sessionUserAccess;
+
+    private User actingUser;
     private String editableSection;
 
-    public Session(){}
+    public Session(User actingUser) { this.actingUser = actingUser;}
 
-    public Session(String selectLogin, String selectRole) {
-        this.sessionUserLogin = selectLogin;
-        this.sessionUserAccess = selectRole;
-    }
-
-    public String getSessionUserAccess() { return sessionUserAccess;}
-    public void setSessionUserAccess(String sessionUserAccess) { this.sessionUserAccess = sessionUserAccess;}
-
-    public String getSessionUserLogin() { return sessionUserLogin;}
-    public void setSessionUserLogin(String sessionUserLogin) { this.sessionUserLogin = sessionUserLogin;}
+    public User getActingUser() { return actingUser;}
+    public void setActingUser(User actingUser) { this.actingUser = actingUser;}
 
     public String getEditableSection() { return editableSection;}
     public void setEditableSection(String editableSection) { this.editableSection = editableSection;}

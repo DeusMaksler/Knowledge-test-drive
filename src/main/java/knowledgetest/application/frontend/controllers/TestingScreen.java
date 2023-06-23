@@ -7,7 +7,11 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import knowledgetest.application.Main;
 import knowledgetest.application.engine.model.Question;
+import knowledgetest.application.engine.model.Record;
+import knowledgetest.application.engine.model.User;
 import knowledgetest.application.engine.repository.QuestionsTable;
+import knowledgetest.application.engine.repository.RecordsTable;
+import knowledgetest.application.engine.repository.UsersTable;
 import knowledgetest.application.frontend.common.DialogWindow;
 import knowledgetest.application.frontend.common.PageManage;
 import knowledgetest.application.frontend.generators.QBItems;
@@ -33,9 +37,10 @@ public class TestingScreen {
         if (iter < questionsList.length) {
             testingScreen.getChildren().add(0, QBItems.showTestForm(questionsList[iter]));
         } else {
-            DialogWindow.createInfoDialog("Результат теста", "Правильных ответов " + countRightPercent(questionsList.length, rightResults) + "%");
-            //добавление в таблицу //fix me
             PageManage.loadPage(currentStage, "home-screen.fxml", "Главный экран", 600, 400);
+            DialogWindow.createInfoDialog("Результат теста", "Правильных ответов " + countRightPercent(questionsList.length, rightResults) + "%");
+            StringBuilder userName = new StringBuilder(Main.session.getActingUser().getName()).append(" ").append(Main.session.getActingUser().getSurname()).append(" ").append(Main.session.getActingUser().getPatronymic());
+            RecordsTable.createRecord(new Record(Main.session.getActingUser().getLogin(), userName.toString(), Main.session.getActingUser().getGroup(), selectedSectionName, countRightPercent(questionsList.length, rightResults)));
         };
     }
 

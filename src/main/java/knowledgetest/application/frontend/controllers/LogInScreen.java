@@ -42,7 +42,7 @@ public class LogInScreen {
             int logInStratus = logChecker.logInVerification(login.getText(), password.getText());
             switch (logInStratus) {
                 case (0):
-                    Main.session = new Session(login.getText(), logChecker.getAccRole(login.getText())); //сохранение информации о сессии
+                    Main.session = new Session(UsersTable.showUser(login.getText())); //сохранение информации о сессии
                     PageManage.loadPage(currentStage, "home-screen.fxml", "Главный экран", 600, 400);
                     break;
                 case (1):

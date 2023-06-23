@@ -12,7 +12,7 @@ public class Authorization {
 
     public Authorization() throws IOException{
         this.accountList = UsersTable.getAccList();
-        this.attemptsList = new HashMap();
+        this.attemptsList = new HashMap<>();
     }
 
     //этот метод возвращает коды соответствующих состояний
@@ -33,11 +33,7 @@ public class Authorization {
     }
 
     public boolean checkSecretAnswer(String login, String answer) {
-        return this.accountList.get(login)[2].equals(answer);
-    }
-
-    public String getAccRole(String login) {
-        return this.accountList.get(login)[1];
+        return this.accountList.get(login)[1].equals(answer);
     }
 
     private int countAttempts(String login) {

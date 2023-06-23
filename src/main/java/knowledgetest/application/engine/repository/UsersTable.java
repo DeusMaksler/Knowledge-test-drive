@@ -69,10 +69,9 @@ public class UsersTable extends BaseFunc{
             if (activeRow.getCell(STATUS_CELL).getBooleanCellValue()){ //проверка аккаунта на блокировку
                 Cell login = activeRow.getCell(LOGIN_CELL);
                 Cell password = activeRow.getCell(PASSWORD_CELL);
-                Cell role = activeRow.getCell(ROLE_CELL);
                 Cell answer = activeRow.getCell(ANSWER_CELL);
-                //упаковка в массив пароля и роли, названия вопроса и секретного ответа
-                String[] accInfo = new String[]{password.getStringCellValue(), role.getStringCellValue(), answer.getStringCellValue()};
+                //упаковка в массив пароля, названия вопроса и секретного ответа
+                String[] accInfo = new String[]{ password.getStringCellValue(), answer.getStringCellValue()};
                 accounts.put(login.getStringCellValue(), accInfo);
             }
         }

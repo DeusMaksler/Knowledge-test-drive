@@ -39,7 +39,7 @@ public class Lk {
     private Button saveChangesButton;
     @FXML
     void initialize() throws IOException {
-        currentAcc = UsersTable.showUser(Main.session.getSessionUserLogin());
+        currentAcc = Main.session.getActingUser();
         nameField.setText(currentAcc.getName());
         surnameField.setText(currentAcc.getSurname());
         patronymicField.setText(currentAcc.getPatronymic());
