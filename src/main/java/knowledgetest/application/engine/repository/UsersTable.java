@@ -1,7 +1,5 @@
 package knowledgetest.application.engine.repository;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import knowledgetest.application.engine.model.User;
@@ -55,6 +53,67 @@ public class UsersTable extends BaseFunc{
         }
     }
 
+    //Запросы к базе
+    public static HashMap<String, String[]> getAccList() throws IOException{
+        HashMap<String, String[]> accounts = new HashMap<>();
+
+        Workbook readableWorkbook = tableReadConnection(TABLE_NAME);
+        Sheet readableSheet = readableWorkbook.getSheetAt(0);
+
+        //получаем число пользователей в таблице
+        int countUsers = getQuantityUsers(readableSheet);
+
+        //получение информации из строки пользователя
+        for (int i = 1; i < countUsers + 1; i++) {
+            Row activeRow = readableSheet.getRow(i);
+            if (activeRow.getCell(STATUS_CELL).getBooleanCellValue()){ //проверка аккаунта на блокировку
+                Cell login = activeRow.getCell(LOGIN_CELL);
+                Cell password = activeRow.getCell(PASSWORD_CELL);
+                Cell role = activeRow.getCell(ROLE_CELL);
+                Cell answer = activeRow.getCell(ANSWER_CELL);
+                //упаковка в массив пароля и роли, названия вопроса и секретного ответа
+                String[] accInfo = new String[]{password.getStringCellValue(), role.getStringCellValue(), answer.getStringCellValue()};
+                accounts.put(login.getStringCellValue(), accInfo);
+            }
+        }
+        readableWorkbook.close();
+        return accounts;
+
+    }
+
+    public static Set<String> getLogins() throws IOException {
+        Set<String> loginSet = new HashSet<>();
+
+        Workbook readableWorkbook = tableReadConnection(TABLE_NAME);
+        Sheet readableSheet = readableWorkbook.getSheetAt(0);
+
+        //получаем число пользователей в таблице
+        int countUsers = getQuantityUsers(readableSheet);
+
+        for (int i = 1; i < countUsers + 1; i++) {
+            Cell login = readableSheet.getRow(i).getCell(LOGIN_CELL);
+            loginSet.add(login.getStringCellValue());
+        }
+        readableWorkbook.close();
+        return loginSet;
+    }
+
+    public static ArrayList<User> getUserList() throws IOException {
+        Workbook readableWorkbook = tableReadConnection(TABLE_NAME);
+        Sheet readableSheet = readableWorkbook.getSheetAt(0);
+
+        int quantity = getQuantityUsers(readableSheet);
+        ArrayList<User> userList = new ArrayList<>();
+
+        for (int i = 2; i < quantity +1; i++) {
+            userList.add(getUser(readableSheet.getRow(i)));
+        }
+
+        readableWorkbook.close();
+        return userList;
+    }
+
+    //Действия на уровне User объекта
     public static void createNewUser(User appendingUser) throws IOException {
         Workbook readableWorkbook = tableReadConnection(TABLE_NAME);
         Sheet readableSheet = readableWorkbook.getSheetAt(0);
@@ -117,16 +176,7 @@ public class UsersTable extends BaseFunc{
         readableWorkbook.close();
     }
 
-    public static void changeStatus(String login, boolean status) throws IOException {
-        Workbook readableWorkbook = tableReadConnection(TABLE_NAME);
-        Sheet readableSheet = readableWorkbook.getSheetAt(0);
-
-        int userPos = searchUser(readableSheet, login);
-        readableSheet.getRow(userPos).getCell(STATUS_CELL).setCellValue(status);
-        tableWriteConnection(TABLE_NAME, readableWorkbook);
-        readableWorkbook.close();
-    }
-
+    //Действия на уровне отдельных полей
     public static void changeStatus(String login) throws IOException {
         Workbook readableWorkbook = tableReadConnection(TABLE_NAME);
         Sheet readableSheet = readableWorkbook.getSheetAt(0);
@@ -159,6 +209,7 @@ public class UsersTable extends BaseFunc{
         readableWorkbook.close();
     }
 
+    //служебные методы
     private static void addUser(Row userPosition, User person) throws IOException {
         // entry login
         Cell activeCell = userPosition.createCell(LOGIN_CELL);
@@ -219,64 +270,6 @@ public class UsersTable extends BaseFunc{
     private static int getQuantityUsers(Sheet sheet) {
         Cell quantityContain= sheet.getRow(0).getCell(User.NUMBER_OF_FIELDS);
         return  (int)quantityContain.getNumericCellValue();
-    }
-
-    public static HashMap<String, String[]> getAccList() throws IOException{
-        HashMap<String, String[]> accounts = new HashMap<>();
-
-        Workbook readableWorkbook = tableReadConnection(TABLE_NAME);
-        Sheet readableSheet = readableWorkbook.getSheetAt(0);
-
-        //получаем число пользователей в таблице
-        int countUsers = getQuantityUsers(readableSheet);
-
-        //получение информации из строки пользователя
-        for (int i = 1; i < countUsers + 1; i++) {
-            Row activeRow = readableSheet.getRow(i);
-            if (activeRow.getCell(STATUS_CELL).getBooleanCellValue()){ //проверка аккаунта на блокировку
-                Cell login = activeRow.getCell(LOGIN_CELL);
-                Cell password = activeRow.getCell(PASSWORD_CELL);
-                Cell role = activeRow.getCell(ROLE_CELL);
-                Cell answer = activeRow.getCell(ANSWER_CELL);
-                //упаковка в массив пароля и роли, названия вопроса и секретного ответа
-                String[] accInfo = new String[]{password.getStringCellValue(), role.getStringCellValue(), answer.getStringCellValue()};
-                accounts.put(login.getStringCellValue(), accInfo);
-            }
-        }
-        readableWorkbook.close();
-        return accounts;
-    }
-
-    public static Set<String> getLogins() throws IOException {
-        Set<String> loginSet = new HashSet<>();
-
-        Workbook readableWorkbook = tableReadConnection(TABLE_NAME);
-        Sheet readableSheet = readableWorkbook.getSheetAt(0);
-
-        //получаем число пользователей в таблице
-        int countUsers = getQuantityUsers(readableSheet);
-
-        for (int i = 1; i < countUsers + 1; i++) {
-            Cell login = readableSheet.getRow(i).getCell(LOGIN_CELL);
-            loginSet.add(login.getStringCellValue());
-        }
-        readableWorkbook.close();
-        return loginSet;
-    }
-
-    public static ArrayList<User> getUserList() throws IOException {
-        Workbook readableWorkbook = tableReadConnection(TABLE_NAME);
-        Sheet readableSheet = readableWorkbook.getSheetAt(0);
-
-        int quantity = getQuantityUsers(readableSheet);
-        ArrayList<User> userList = new ArrayList<>();
-
-        for (int i = 2; i < quantity +1; i++) {
-            userList.add(getUser(readableSheet.getRow(i)));
-        }
-
-        readableWorkbook.close();
-        return userList;
     }
 }
 

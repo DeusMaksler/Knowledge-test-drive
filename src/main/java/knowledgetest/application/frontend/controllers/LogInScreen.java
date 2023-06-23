@@ -56,9 +56,8 @@ public class LogInScreen {
                     if (logChecker.checkSecretAnswer(login.getText(), enterAnswer)) {
                         changePasswordProcedure();
                     } else {
-                        UsersTable.changeStatus(login.getText(), false);
+                        UsersTable.changeStatus(login.getText());
                         DialogWindow.createInfoDialog(ERROR_NAME, "Ваш аккаунт заблогирован");
-                        //обращение к админу //fix me
                     }
                     break;
             }
