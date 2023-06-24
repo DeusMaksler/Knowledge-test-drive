@@ -9,7 +9,6 @@ import knowledgetest.application.Main;
 import knowledgetest.application.engine.model.QSection;
 import knowledgetest.application.engine.model.Question;
 import knowledgetest.application.engine.repository.QuestionsTable;
-import knowledgetest.application.frontend.common.DialogWindow;
 import knowledgetest.application.frontend.common.PageManage;
 import knowledgetest.application.frontend.controllers.QuestionBaseScreen;
 import knowledgetest.application.frontend.controllers.QuestionSectionScreen;

@@ -1,11 +1,7 @@
 package knowledgetest.application.frontend.controllers;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import knowledgetest.application.Main;
 import knowledgetest.application.engine.service.Registration;
 import knowledgetest.application.frontend.common.DialogWindow;
 import knowledgetest.application.frontend.common.PageManage;
@@ -85,5 +81,4 @@ public class LogUpScreen {
         }
         return true;
     }
-
 }

@@ -9,7 +9,7 @@
 
 <AnchorPane prefHeight="440.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="knowledgetest.application.frontend.controllers.Lk">
    <children>
-      <TabPane fx:id="lkTabPane" prefHeight="440.0" prefWidth="650.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="lkTabPane" prefHeight="407.0" prefWidth="650.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab closable="false" text="Личные данные">
             <content>
@@ -21,17 +21,17 @@
                         <TextField fx:id="groupField" editable="false" layoutX="42.0" layoutY="105.0" promptText="Группа" />
                         <TextField fx:id="patronymicField" editable="false" layoutX="447.0" layoutY="32.0" promptText="Отчество" />
                         <TextField fx:id="surnameField" editable="false" layoutX="250.0" layoutY="32.0" promptText="Фамилия" />
-                        <Button fx:id="activeFieldsButton" layoutX="42.0" layoutY="346.0" mnemonicParsing="false" onMouseClicked="#activeFields" text="Изменить данные">
+                        <Button fx:id="activeFieldsButton" layoutX="43.0" layoutY="333.0" mnemonicParsing="false" onMouseClicked="#activeFields" text="Изменить данные">
                            <font>
                               <Font name="Bookman Old Style" size="14.0" />
                            </font>
                         </Button>
-                        <Button fx:id="saveChangesButton" disable="true" layoutX="421.0" layoutY="346.0" mnemonicParsing="false" onMouseClicked="#saveChanges" text="Сохранить изменения">
+                        <Button fx:id="saveChangesButton" disable="true" layoutX="421.0" layoutY="333.0" mnemonicParsing="false" onMouseClicked="#saveChanges" text="Сохранить изменения">
                            <font>
                               <Font name="Bookman Old Style" size="14.0" />
                            </font>
                         </Button>
-                        <Button layoutX="256.0" layoutY="346.0" mnemonicParsing="false" onMouseClicked="#remoteUserButton" text="Удалить аккаунт">
+                        <Button layoutX="250.0" layoutY="333.0" mnemonicParsing="false" onMouseClicked="#remoteUserButton" text="Удалить аккаунт">
                            <font>
                               <Font name="Bookman Old Style" size="14.0" />
                            </font>
@@ -42,5 +42,6 @@
           </Tab>
         </tabs>
       </TabPane>
+      <Button layoutX="575.0" layoutY="407.0" mnemonicParsing="false" onMouseClicked="#goToHome" text="Назад" />
    </children>
 </AnchorPane>

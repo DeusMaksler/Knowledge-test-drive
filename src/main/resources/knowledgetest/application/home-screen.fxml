@@ -6,16 +6,24 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="knowledgetest.application.frontend.controllers.HomeScreen">
    <children>
-      <ButtonBar fx:id="standardBtnBar" layoutX="136.0" layoutY="62.0" prefHeight="40.0" prefWidth="440.0">
+      <ButtonBar fx:id="standardBtnBar" layoutX="22.0" layoutY="62.0" prefHeight="40.0" prefWidth="554.0">
          <buttons>
-            <Button fx:id="lkButton" mnemonicParsing="false" onMouseClicked="#goToLK" prefHeight="26.0" prefWidth="108.0" text="Личный кабинет" />
-            <Button fx:id="qbButton" mnemonicParsing="false" onMouseClicked="#goToQB" prefHeight="23.0" prefWidth="108.0" text="К базе вопросов" />
-            <Button fx:id="primalTestButton" mnemonicParsing="false" onMouseClicked="#testSwitchMode" prefHeight="18.0" prefWidth="108.0" text="Пройти тест" />
+            <Button fx:id="lkButton" mnemonicParsing="false" onMouseClicked="#goToLK" prefHeight="64.0" prefWidth="124.0" text="Личный кабинет" wrapText="true" />
+            <Button fx:id="qbButton" mnemonicParsing="false" onMouseClicked="#goToQB" prefHeight="58.0" prefWidth="108.0" text="К базе вопросов" />
+            <Button fx:id="primalTestButton" mnemonicParsing="false" onMouseClicked="#testSwitchMode" prefHeight="40.0" prefWidth="108.0" text="Пройти тест" />
+            <Button fx:id="primalAnalystButton" mnemonicParsing="false" onMouseClicked="#analystSwitchMode" prefHeight="55.0" text="Открыть статистику" />
          </buttons>
       </ButtonBar>
-      <ButtonBar fx:id="testBtnBar" disable="true" layoutX="136.0" layoutY="277.0" opacity="0.0" prefHeight="40.0" prefWidth="440.0">
+      <ButtonBar fx:id="testBtnBar" disable="true" layoutX="79.0" layoutY="180.0" opacity="0.0" prefHeight="40.0" prefWidth="440.0">
         <buttons>
-            <Button fx:id="homeBackButton" mnemonicParsing="false" text="Назад" />
+            <Button mnemonicParsing="false" onMouseClicked="#rebootPage" prefHeight="62.0" text="Назад" />
+        </buttons>
+      </ButtonBar>
+      <ButtonBar fx:id="analystBtnBar" disable="true" layoutX="165.0" layoutY="284.0" opacity="0.0" prefHeight="40.0" prefWidth="200.0">
+        <buttons>
+          <Button mnemonicParsing="false" onMouseClicked="#selectTestStatistic" text="Статистика по тестам" wrapText="true" />
+            <Button mnemonicParsing="false" onMouseClicked="#selectGroupStatistic" text="Статистика групп" wrapText="true" />
+            <Button mnemonicParsing="false" onMouseClicked="#rebootPage" prefHeight="51.0" text="Назад" />
         </buttons>
       </ButtonBar>
    </children>

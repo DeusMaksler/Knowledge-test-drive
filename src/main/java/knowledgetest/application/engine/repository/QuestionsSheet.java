@@ -1,6 +1,5 @@
 package knowledgetest.application.engine.repository;
 
-import knowledgetest.application.engine.model.QSection;
 import knowledgetest.application.engine.model.Question;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;

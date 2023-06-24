@@ -1,17 +1,12 @@
 package knowledgetest.application.frontend.controllers;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import knowledgetest.application.Main;
 import knowledgetest.application.engine.model.Question;
 import knowledgetest.application.engine.model.Record;
-import knowledgetest.application.engine.model.User;
-import knowledgetest.application.engine.repository.QuestionsTable;
 import knowledgetest.application.engine.repository.RecordsTable;
-import knowledgetest.application.engine.repository.UsersTable;
 import knowledgetest.application.frontend.common.DialogWindow;
 import knowledgetest.application.frontend.common.PageManage;
 import knowledgetest.application.frontend.generators.QBItems;

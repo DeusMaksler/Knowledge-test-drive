@@ -7,6 +7,8 @@ public class Record {
     private String testName;
     private int userResult;
 
+    public Record() {}
+
     public Record(String userLogin, String userName, String userGroup, String testName, int userResult){
         this.userLogin = userLogin;
         this.userName = userName;

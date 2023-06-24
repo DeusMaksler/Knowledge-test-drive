@@ -2,9 +2,9 @@ package knowledgetest.application.frontend.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 import knowledgetest.application.Main;
 import knowledgetest.application.engine.model.User;
+import knowledgetest.application.engine.repository.RecordsTable;
 import knowledgetest.application.engine.repository.UsersTable;
 import knowledgetest.application.engine.service.Registration;
 import knowledgetest.application.frontend.common.DialogWindow;
@@ -46,8 +46,12 @@ public class Lk {
         groupField.setText(currentAcc.getGroup());
         emailField.setText(currentAcc.getEmail());
 
-        //реализовать разделение по ролям //fix me
-        lkTabPane.getTabs().add(Tabs.createUsersTab());
+        if (Main.session.getActingUser().getRole().equals("admin")) {
+            lkTabPane.getTabs().add(Tabs.createUsersTab()); //функционал админа
+            lkTabPane.getTabs().add(Tabs.createStatisticTab(RecordsTable.getSelfRecord(Main.session.getActingUser().getLogin()), "Результаты"));//функционал пользователя
+        } else if (Main.session.getActingUser().getRole().equals("user")) {
+            lkTabPane.getTabs().add(Tabs.createStatisticTab(RecordsTable.getSelfRecord(Main.session.getActingUser().getLogin()), "Результаты"));//функционал пользователя
+        }
     }
 
     public void activeFields() {
@@ -112,6 +116,10 @@ public class Lk {
             UsersTable.remoteUser(currentAcc.getLogin());
             PageManage.loadPage(currentStage, "log-in-screen.fxml", "Войдите в приложение", 555, 365);
         }
+    }
+
+    public void goToHome() throws IOException {
+        PageManage.loadPage(currentStage, "home-screen.fxml", "Главный экран", 600, 400);
     }
 
 }

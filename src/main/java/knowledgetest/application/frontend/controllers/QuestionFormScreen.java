@@ -94,7 +94,6 @@ public class QuestionFormScreen {
         }
     }
 
-
     private boolean checkRightField(int rightCell){
         if (ynBox.isSelected()){
             return (rightCell == 1 || rightCell == 2);
